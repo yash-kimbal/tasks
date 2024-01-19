@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+
+
+<!--        Tree View-->
+        <record id="estate_property_tag_tree_view" model="ir.ui.view">
+            <field name="name">estate.property.tag.tree</field>
+            <field name="model">estate.property.tag</field><!--   Tells the model it follow, that is here its Tree View-->
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+<!--Form-View-->
+        <record id="estate_property_tag_form_view" model="ir.ui.view">
+            <field name="name">estate.property.tag.form</field>
+            <field name="model">estate.property.tag</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+<!--        Action View-->
+<!--        Here id is used to come on this xml when user clicks the button on the menu item field of type name.-->
+        <record id="action_property_tag" model="ir.actions.act_window">
+            <field name="name">Property Tag</field>
+            <field name="res_model">estate.property.tag</field>
+            <field name="view_mode">tree,form</field>
+<!--            This ref="estate_property_tree_view" will be the first view that it will be pointing to.-->
+            <field name="view_id" ref="estate_property_tag_tree_view"/>
+        </record>
+    </data>
+</odoo>
+
