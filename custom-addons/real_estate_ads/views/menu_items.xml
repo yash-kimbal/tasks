@@ -2,12 +2,14 @@
 <odoo>
     <menuitem name="Property Ads" id="menu_root_property_ads" web_icon="real_estate_ads,static/description/icon.png">
         <menuitem id="menu_property_ads" name="Ads">
+<!--            Defines an action for the refered id. here its in the property_view.xml.-->
             <menuitem id="menu_property" name="Property" action="real_estate_ads.action_property"/>
         </menuitem>
         <menuitem id="menu_property_ads_settings" name="Settings">
 <!--             <record id="action_property_type" model="ir.actions.act_window">
-calls this line of property_type_view.xml file-->
+                  calls this line of property_type_view.xml file-->
             <menuitem id="menu_property_type" name="Property Types" action="real_estate_ads.action_property_type"/>
+<!--            Here action is referred to the model.id_referred in the available xml file-->
             <menuitem id="menu_property_tag" name="Property Tag" action="real_estate_ads.action_property_tag"/>
         </menuitem>
     </menuitem>

@@ -1,0 +1,34 @@
+<!--    Use data files to create records in the database during module installation.-->
+<!--    Records created using data files are permanent and persist even after module installation.-->
+
+<!--Usage:-->
+
+<!--    Data files are typically used for creating essential records that need to be present in the database consistently.-->
+<!--    Good for creating base data like property types, property tags, etc.-->
+<odoo>
+<!--    Create this data only once, no updates.-->
+    <data noupdate="1">
+        <record id="property_type_house" model="estate.property.type">
+            <field name="name">House</field>
+        </record>
+        <record id="property_type_apartment" model="estate.property.type">
+            <field name="name">Apartment</field>
+        </record>
+        <record id="property_type_penthouse" model="estate.property.type">
+            <field name="name">Penthouse</field>
+        </record>
+        <record id="property_type_castle" model="estate.property.type">
+            <field name="name">Castle</field>
+        </record>
+    </data>
+</odoo>
+
+<!--Important Notes:-->
+
+<!--    Permanent vs. Temporary:-->
+<!--        Data files create permanent records in the database.-->
+<!--        Demo files create temporary records during installation for testing or demonstration purposes.-->
+
+<!--    Usage Considerations:-->
+<!--        Use data files for essential and permanent data.-->
+<!--        Use demo files for temporary or demo-specific data.-->

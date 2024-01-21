@@ -4,7 +4,10 @@
 
 <!--        Tree View-->
 <!--        Here record means a new entry of a view in the database. -->
+<!--        Here id is used to refer to this view in down action ref value assigned.-->
         <record id="estate_property_tree_view" model="ir.ui.view">
+            <!--            name: A unique identifier for the view.-->
+<!--            model: Specifies the model that this view is associated with.-->
             <field name="name">estate.property.tree</field>
             <field name="model">estate.property</field><!--   Tells the model it follow, that is here its Tree View-->
             <field name="arch" type="xml">
@@ -22,6 +25,8 @@
         </record>
 <!--Form-View-->
         <record id="estate_property_form_view" model="ir.ui.view">
+            <!--            name: A unique identifier for the view.-->
+<!--            model: Specifies the model that this view is associated with.-->
             <field name="name">estate.property.form</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
@@ -52,6 +57,7 @@
                                         <field name="garden"/>
                                         <field name="garden_area"/>
                                         <field name="garden_orientation"/>
+                                        <field name="total_area"/>
                                     </group>
                                 </page>
                                 <page string="Offers">
@@ -59,6 +65,7 @@
                                         <tree editable="bottom">
                                             <field name="price"/>
                                             <field name="partner_id"/>
+                                            <field name="creation_date"/>
                                             <field name="validity"/>
                                             <field name="deadline"/>
                                             <field name="status" nolable="1"/>
@@ -66,10 +73,14 @@
                                     </field>
                                 </page>
                             <page string="Other Info">
-<!--                                <group>-->
-<!--                                    <field name="sales_id"/>-->
-<!--                                    <field name="buyer_id"/>-->
-<!--                                </group>-->
+<!--                                We can have a buyer ID who eventually bought this property.
+And we can have. Salesman. Sales. I'd. These two fields are not available in our model and we can add them here.
+There will be many to one. -->
+                                <group>
+                                    <field name="sales_id"/>
+                                    <field name="buyer_id"/>
+                                    <field name="phone"/>
+                                </group>
                             </page>
                             </notebook>
                     </sheet>
@@ -77,6 +88,12 @@
             </field>
         </record>
 <!--        Action View-->
+<!--    record with id="action_property": Defines an action for the "estate.property" model.-->
+<!--        name: A descriptive name for the action.-->
+<!--        res_model: Specifies the model associated with the action.-->
+<!--        view_mode: Specifies the view modes available for this action (tree and form).-->
+<!--        view_id with ref="estate_property_tree_view": Specifies the default view for this action, pointing to the previously defined tree view.-->
+<!--        help: Provides a helpful message to be displayed in the UI.-->
         <record id="action_property" model="ir.actions.act_window">
             <field name="name">Property</field>
             <field name="res_model">estate.property</field>

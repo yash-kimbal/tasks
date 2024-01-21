@@ -1,0 +1,26 @@
+<!--Objective:-->
+
+<!--    Use demo files to create records during module installation, but these records are not permanent.-->
+<!--    Records created using demo files exist only at the point of installation and are not stored permanently.-->
+
+<!--Usage:-->
+
+<!--    Demo files are suitable for creating sample or demo data that can be useful during testing or for showcasing features.-->
+<!--    Good for creating initial records for testing purposes.-->
+<odoo>
+<!--    Create this data only once, no updates.-->
+    <data noupdate="1">
+        <record id="property_tag_cozy" model="estate.property.tag">
+            <field name="name">Cozy</field>
+        </record>
+        <record id="property_tag_renovated" model="estate.property.tag">
+            <field name="name">Renovated</field>
+        </record>
+        <record id="property_tag_new" model="estate.property.tag">
+            <field name="name">New</field>
+        </record>
+        <record id="property_tag_abandoned" model="estate.property.tag">
+            <field name="name">Abandoned</field>
+        </record>
+    </data>
+</odoo>
