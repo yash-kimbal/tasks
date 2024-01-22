@@ -147,6 +147,12 @@ The template includes fields such as the property name and tags.-->
         </record>
 
 <!--        Calender View-->
+<!--        Key attributes for the calendar view are defined:-->
+
+<!--    date_start: Indicates the starting date of an event, using the date_availability field from the Property model.-->
+<!--    mode: Specifies whether the calendar should display months, weeks, or days (set to months in this case).-->
+
+<!--Additional fields like name and postcode are included in the calendar view.-->
          <record id="estate_property_calendar_view" model="ir.ui.view">
             <field name="name">estate.property.calendar</field>
             <field name="model">estate.property</field>
@@ -202,8 +208,8 @@ Each button has a corresponding method in the model (action_accept and action_de
                             </button>
                         </div>
                         <group>
-                            <field name="name" widget="char_emojis"/>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
+                            <field name="name" widget="char_emojis" placeholder="Property Name"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}" placeholder="Add Tags"/>
                             <group>
 
 <!--Updating the Property View:-->
@@ -211,7 +217,7 @@ Each button has a corresponding method in the model (action_accept and action_de
 allowing users to view and edit the status directly from the property form.-->
                                 <field name="state"/>
                                 <field name="type_id"/>
-                                <field name="postcode"/>
+                                <field name="postcode" password="True"/>
                                 <field name="data_availability"/>
                             </group>
                             <group>
@@ -232,7 +238,7 @@ allowing users to view and edit the status directly from the property form.-->
 <!--                                Conditional Visibility:-->
 <!--    Demonstrated the use of the attrs attribute to conditionally hide fields based on the value of another field.-->
 <!--    For example, hiding the "Garden Area" and "Orientation" fields when the "Gardening" option is set to false.-->
-                                        <field name="garden_area" attrs="{'invisible': [('garden','=',False)]}"/>
+                                        <field name="garden_area" attrs="{'invisible': [('garden','=',False)],'readonly':[('garden','=',True)]}"/>
                                         <field name="garden_orientation" attrs="{'invisible': [('garden','=',False)]}" widget="selection_badge"/>
                                         <field name="total_area"/>
                                     </group>
