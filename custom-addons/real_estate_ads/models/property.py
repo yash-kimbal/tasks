@@ -16,6 +16,13 @@ class Property(models.Model):
 
     # These will be the columns for our table.
     name = fields.Char(String="Name", required=True)
+    state = fields.Selection([
+        ('new', 'New'),
+        ('received', 'Offer Received'),
+        ('accepted', 'Offer Accepted'),
+        ('sold', 'Sold'),
+        ('cancel', 'Cancelled')
+    ], default='new', string='Status')
     tag_ids = fields.Many2many('estate.property.tag', String='Property Tag')
     # This implies that each property record can be associated with only one property type,
     # but multiple properties can share the same property type.
@@ -38,8 +45,12 @@ class Property(models.Model):
     garage = fields.Boolean(String="Garage", default=False)
     garden = fields.Boolean(String="Garden", default=False)
     garden_area = fields.Integer(String="Garden Area")
-    garden_orientation = fields.Selection([('north', 'North'), ('south', 'South'), ('east', 'East'), ('west', 'West')],
-                                          String="Garden Orientation", default='north')
+    garden_orientation = fields.Selection([
+        ('north', 'North'),
+        ('south', 'South'),
+        ('east', 'East'),
+        ('west', 'West')],
+        String="Garden Orientation", default='north')
     offer_ids = fields.One2many('estate.property.offer', 'property_id', String='Offers')
     # And this salesperson can be.
     # Somebody in the system.
@@ -74,6 +85,11 @@ class Property(models.Model):
 
     total_area = fields.Integer(string="Total Area")
 
+    def action_sold(self):
+        self.state = 'sold'
+
+    def action_cancel(self):
+        self.state = 'cancel'
     # The second additional thing you should know are automatic fields
     # These fields are automatically created by odoo
     # They cannot be written to, but you can read them if you need to see some information there

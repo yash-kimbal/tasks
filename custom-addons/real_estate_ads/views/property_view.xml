@@ -31,11 +31,18 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <form>
+                    <header>
+<!--                        object type is used when we have a method defined in the property.py (in model)-->
+                        <button name="action_sold" type="object" string="Sold" class="btn btn-primary"/>
+                        <button name="action_cancel" type="object" string="Cancel" class="btn btn-danger"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
                     <sheet>
                         <group>
                             <field name="name"/>
                             <field name="tag_ids" widget="many2many_tags"/>
                             <group>
+                                <field name="state"/>
                                 <field name="type_id"/>
                                 <field name="postcode"/>
                                 <field name="data_availability"/>
