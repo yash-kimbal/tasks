@@ -20,6 +20,24 @@
                 </tree>
             </field>
         </record>
+
+
+<!--        Gantt View-->
+<!--        he Gantt view provides a visual representation of tasks or records along a timeline,
+allowing for better project management.-->
+<!--        Only available in ENTERPRISE Edition-->
+<!--         <record id="estate_property_offer_gantt_view" model="ir.ui.view">-->
+<!--            name: A unique identifier for the view.-->
+<!--            model: Specifies the model that this view is associated with.-->
+<!--            <field name="name">estate.property.offer.gantt</field>-->
+<!--            <field name="model">estate.property.offer</field>&lt;!&ndash;   Tells the model it follow, that is here its Tree View&ndash;&gt;-->
+<!--            <field name="arch" type="xml">-->
+<!--                <gantt date_start="creation_date" date_stop="deadline" default_group_by="partner_id"/>-->
+
+<!--            </field>-->
+<!--        </record>-->
+
+
 <!--Form-View-->
         <record id="estate_property_offer_form_view" model="ir.ui.view">
             <field name="name">estate.property.offer.form</field>
@@ -38,7 +56,6 @@
                                 <field name="creation_date" readonly="1"/>
                                 <field name="validity"/>
                                 <field name="deadline"/>
-                                <field name="partner_email"/>
                            </group>
                         </group>
                     </sheet>
