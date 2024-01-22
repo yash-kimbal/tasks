@@ -2,6 +2,13 @@
 <odoo>
     <data>
 
+        <record id="action_property_view_offers" model="ir.actions.act_window">
+            <field name="name">Property</field>
+            <field name="res_model">estate.property.offer</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('property_id','=',active_id)]</field>
+        </record>
+
 <!--        Tree View-->
 <!--        Here record means a new entry of a view in the database. -->
 <!--        Here id is used to refer to this view in down action ref value assigned.-->
@@ -31,17 +38,47 @@
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
                 <form>
+<!--                    Creating Buttons and Actions:-->
+<!--    Two buttons, "Accept" and "Decline," are added to the property view.
+These buttons will trigger actions with specific logic.-->
+<!--    Buttons are declared with the <button> tag, and the type attribute is set to "object."
+Each button has a corresponding method in the model (action_accept and action_decline).-->
                     <header>
 <!--                        object type is used when we have a method defined in the property.py (in model)-->
                         <button name="action_sold" type="object" string="Sold" class="btn btn-primary"/>
                         <button name="action_cancel" type="object" string="Cancel" class="btn btn-danger"/>
+
+<!--                        Status Bar Widget:-->
+<!--    A status bar widget is added to the property view to visually represent the status in a more user-friendly way.-->
+<!--    The status field is set to invisible to hide it from the view, and the status bar widget is used to display the states.-->
+<!--                        STATE-->
                         <field name="state" widget="statusbar"/>
                     </header>
                     <sheet>
+                        <div class="oe_button_box" name="button_box">
+<!--                            Smart Button with Action:-->
+<!--    A smart button is added to the property view, providing a count of associated offers. The button is linked to an action.-->
+<!--    The action is defined in XML and includes a domain to filter offers related to the specific property.-->
+<!--                            SMART BUTTON-->
+<!--                            <button class="oe_stat_button" name="%(real_estate_ads.action_property_view_offers)d" type="action">-->
+<!--                                <field name="offer_count" string="Offers" widget="statinfo"/>-->
+<!--                            </button>-->
+<!--                            SMART BUTTON-->
+<!--                            Icon for Smart Button:-->
+<!--    Added an icon attribute to the smart button, making it visually appealing.-->
+<!--    Used Font Awesome icons, and in this case, an icon related to the offer, such as a handshake.-->
+                            <button class="oe_stat_button" name="action_property_view_offers" type="object" icon="fa-handshake-o">
+                                <field name="offer_count" string="Offers" widget="statinfo"/>
+                            </button>
+                        </div>
                         <group>
                             <field name="name"/>
-                            <field name="tag_ids" widget="many2many_tags"/>
+                            <field name="tag_ids" widget="many2many_tags" options="{'color_field':'color'}"/>
                             <group>
+
+<!--Updating the Property View:-->
+<!--    The status field is added to the property view,
+allowing users to view and edit the status directly from the property form.-->
                                 <field name="state"/>
                                 <field name="type_id"/>
                                 <field name="postcode"/>
@@ -62,20 +99,30 @@
                                         <field name="facades"/>
                                         <field name="garage"/>
                                         <field name="garden"/>
-                                        <field name="garden_area"/>
-                                        <field name="garden_orientation"/>
+<!--                                Conditional Visibility:-->
+<!--    Demonstrated the use of the attrs attribute to conditionally hide fields based on the value of another field.-->
+<!--    For example, hiding the "Garden Area" and "Orientation" fields when the "Gardening" option is set to false.-->
+                                        <field name="garden_area" attrs="{'invisible': [('garden','=',False)]}"/>
+                                        <field name="garden_orientation" attrs="{'invisible': [('garden','=',False)]}"/>
                                         <field name="total_area"/>
                                     </group>
                                 </page>
                                 <page string="Offers">
                                     <field name="offer_ids">
-                                        <tree editable="bottom">
+                                        <tree editable="bottom" decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
                                             <field name="price"/>
                                             <field name="partner_id"/>
-                                            <field name="creation_date"/>
+                                            <field name="creation_date" invisible="1"/>
                                             <field name="validity"/>
                                             <field name="deadline"/>
-                                            <field name="status" nolable="1"/>
+                                            <field name="status"/>
+
+<!--                                            Accept and Decline Buttons:-->
+<!--    Added "Accept" and "Decline" buttons to the offer view.-->
+<!--    Associated methods (action_accept and action_decline) to handle the logic when these buttons are clicked.-->
+<!--    Used icons and styles to make the buttons visually distinguishable.-->
+                                            <button name="action_accept_offer" type="object" icon="fa-check" string="Accept"/>
+                                            <button name="action_decline_offer" type="object" icon="fa-times" string="Decline"/>
                                         </tree>
                                     </field>
                                 </page>
@@ -94,6 +141,7 @@ There will be many to one. -->
                 </form>
             </field>
         </record>
+
 <!--        Action View-->
 <!--    record with id="action_property": Defines an action for the "estate.property" model.-->
 <!--        name: A descriptive name for the action.-->

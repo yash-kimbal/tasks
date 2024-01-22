@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <data>
+
+<!--        Tree View-->
+        <record id="estate_property_offer_tree_view" model="ir.ui.view">
+<!--            name: A unique identifier for the view.-->
+<!--            model: Specifies the model that this view is associated with.-->
+            <field name="name">estate.property.offer.tree</field>
+            <field name="model">estate.property.offer</field><!--   Tells the model it follow, that is here its Tree View-->
+            <field name="arch" type="xml">
+                <tree  decoration-success="status == 'accepted'" decoration-danger="status == 'refused'">
+                    <field name="price"/>
+                    <field name="status"/>
+                    <field name="partner_id"/>
+                    <field name="property_id"/>
+                    <field name="creation_date"/>
+                    <field name="validity"/>
+                    <field name="deadline"/>
+                </tree>
+            </field>
+        </record>
+<!--Form-View-->
+        <record id="estate_property_offer_form_view" model="ir.ui.view">
+            <field name="name">estate.property.offer.form</field>
+            <field name="model">estate.property.offer</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                           <group>
+                               <field name="price"/>
+                               <field name="status"/>
+                               <field name="partner_id"/>
+                               <field name="property_id"/>
+                           </group>
+                            <group>
+                                <field name="creation_date" readonly="1"/>
+                                <field name="validity"/>
+                                <field name="deadline"/>
+                                <field name="partner_email"/>
+                           </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+<!--        Action View-->
+<!--        Here id is used to come on this xml when user clicks the button on the menu item (in menu_item.xml) field of type name.-->
+        <record id="action_property_offers" model="ir.actions.act_window">
+            <field name="name">Property Offers</field>
+            <field name="res_model">estate.property.offer</field>
+            <field name="view_mode">tree,form</field>
+<!--            This ref="estate_property_tree_view" will be the first view that it will be pointing to.-->
+            <field name="view_id" ref="estate_property_offer_tree_view"/>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create a property to Advertise
+                </p>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -16,6 +16,11 @@ class Property(models.Model):
 
     # These will be the columns for our table.
     name = fields.Char(String="Name", required=True)
+
+    # Adding a Status Field:
+    #     A new field called status is added to the property model
+    #     with predefined states like 'New,' 'Received,' 'Accepted,' 'Refused,' and 'Cancelled.'
+    #     The default state is set to 'New.'
     state = fields.Selection([
         ('new', 'New'),
         ('received', 'Offer Received'),
@@ -37,8 +42,8 @@ class Property(models.Model):
     # data_availability = fields.Date(String="Available From", readonly=True)
     data_availability = fields.Date(String="Available From")
     expected_price = fields.Float(String="Expected Price")
-    best_offer = fields.Float(String="Best Offer")
-    selling_price = fields.Float(String="Selling Price")
+    best_offer = fields.Float(String="Best Offer", compute='_compute_best_price')
+    selling_price = fields.Float(String="Selling Price", readonly=True)
     bedrooms = fields.Integer(String="Bedrooms")
     living_area = fields.Integer(String="Living Area(sqm)")
     facades = fields.Integer(String="Facades")
@@ -90,6 +95,34 @@ class Property(models.Model):
 
     def action_cancel(self):
         self.state = 'cancel'
+
+    @api.depends('offer_ids')
+    def _compute_offer_count(self):
+        for rec in self:
+            rec.offer_count = len(rec.offer_ids)
+
+    offer_count = fields.Integer(string="Offer Count", compute=_compute_offer_count)
+
+    def action_property_view_offers(self):
+        return {
+            'type': "ir.actions.act_window",
+            'name': f"{self.name}  - offers",
+            'domain': [('property_id', '=', self.id)],
+            'view_mode': 'tree',
+            'res_model': 'estate.property.offer'
+        }
+
+    # Best Offer Logic:
+    #     A computed field, best_price, is added to the property model.
+    #     It calculates the best offer price for the property.
+    #     The computed field logic involves iterating through the associated offers to find the maximum price.
+    @api.depends('offer_ids')
+    def _compute_best_price(self):
+        for rec in self:
+            if rec.offer_ids:
+                rec.best_offer = max(rec.offer_ids.mapped('price'))
+            else:
+                rec.best_offer = 0
     # The second additional thing you should know are automatic fields
     # These fields are automatically created by odoo
     # They cannot be written to, but you can read them if you need to see some information there
@@ -116,3 +149,8 @@ class PropertyTag(models.Model):
     _description = 'Property Tags'
 
     name = fields.Char(string="Name", required=True)
+    # Colorful Tags:
+    #     Added a color field to the many-to-many model (tags).
+    #     Used the options attribute to link the color field to the tag model.
+    #     Tags now display colors in the menu.
+    color = fields.Integer(string='Color')

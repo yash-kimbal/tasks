@@ -23,6 +23,7 @@
                     <sheet>
                         <group>
                             <field name="name"/>
+                            <field name="color" invisble="1"/>
                         </group>
                     </sheet>
                 </form>

@@ -11,6 +11,7 @@
             <menuitem id="menu_property_type" name="Property Types" action="real_estate_ads.action_property_type"/>
 <!--            Here action is referred to the model.id_referred in the available xml file-->
             <menuitem id="menu_property_tag" name="Property Tag" action="real_estate_ads.action_property_tag"/>
+            <menuitem id="menu_property_offers" name="Offers" action="real_estate_ads.action_property_offers"/>
         </menuitem>
     </menuitem>
 </odoo>
