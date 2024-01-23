@@ -152,15 +152,23 @@ class Property(models.Model):
     #     }
 
 # Working with URL Actions
-    def action_url_action(self):
-        return {
-            'type': 'ir.actions.act_url',
-            'url': 'www.odoo.com',
-            'target': 'new',
-        }
+#     def action_url_action(self):
+#         return {
+#             'type': 'ir.actions.act_url',
+#             'url': 'www.odoo.com',
+#             'target': 'new',
+#         }
 
+    # <!-- QWeb Report: Creating Report Actions and PDF Report for our Module-->
     def _get_report_base_filename(self):
+        # This method ensures that the recordset (self) contains exactly one record.
+        # If there are multiple records, it raises an exception.
+        # This is often used in scenarios where the method is expected to operate on a single record.
         self.ensure_one()
+        # This line constructs a string for the filename.
+        # It uses the % operator for string formatting, and %s is a placeholder for a string.
+        # In this case, it substitutes %s with the value of self.name.
+        #  Example: If self.name is "Luxury Villa," the returned filename would be "Estate Property - Luxury Villa."
         return 'Estate Property - %s' % self.name
 
 class PropertyType(models.Model):

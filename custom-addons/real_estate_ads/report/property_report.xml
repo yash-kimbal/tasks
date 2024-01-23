@@ -1,3 +1,4 @@
+<!-- QWeb Report: Creating Report Actions and PDF Report for our Module-->
 <odoo>
     <data>
         <record id="property_report_action" model="ir.actions.report">
