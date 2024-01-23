@@ -1,0 +1,38 @@
+<!-- Getting Advanced with Access Rights-->
+<!--Assigned specific access rights to these groups(res_groups.xml) to control their permissions.-->
+<!--Created a model_access.xml file to override the default access rights for the "Property Type" model.-->
+<!--Used the groups attribute on a menu to control which user groups can see that menu.-->
+<odoo>
+    <data>
+        <!-- Access Rights for Estate Property Type -->
+<!--            Defines an access rule for the "Estate Property Type" model.-->
+<!--    It grants access to the group with the ID real_estate_ads.group_property_manager.-->
+        <record id="real_estate_ads.access_estate_property_type" model="ir.model.access">
+            <field name="group_id" ref="real_estate_ads.group_property_manager"/>
+        </record>
+
+        <!-- Access Rights for Estate Property Tag -->
+<!--            Defines an access rule for the "Estate Property Tag" model.-->
+<!--    It also grants access to the group with the ID real_estate_ads.group_property_manager.-->
+        <record id="real_estate_ads.access_estate_property_tag" model="ir.model.access">
+            <field name="group_id" ref="real_estate_ads.group_property_manager"/>
+        </record>
+
+        <!-- Access Rights for Property Tag for User Group -->
+<!--Defines an access rule for the "Property Tag" model specifically for the "Property User" group.-->
+<!--name: Human-readable name for the access rule.-->
+<!--model_id: References the model for which this rule applies (real_estate_ads.model_estate_property_tag).-->
+<!--group_id: Specifies the user group (real_estate_ads.group_property_user) that this rule applies to.-->
+<!--perm_read: Grants read access (1) to the specified group.-->
+<!--perm_create, perm_write, perm_unlink: Set to 0, denying create, write, and unlink permissions.-->
+        <record id="access_estate_property_tag_user" model="ir.model.access">
+            <field name="name">Property tag access for user</field>
+            <field name="model_id" ref="real_estate_ads.model_estate_property_tag"/>
+            <field name="group_id" ref="real_estate_ads.group_property_user"/>
+            <field name="perm_read">1</field>
+            <field name="perm_create">0</field>
+            <field name="perm_write">0</field>
+            <field name="perm_unlink">0</field>
+        </record>
+    </data>
+</odoo>

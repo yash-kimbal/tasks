@@ -1,0 +1,36 @@
+<odoo>
+    <data>
+<!--        Property Rule for Users:-->
+
+<!--    It applies to the model real_estate_ads.model_estate_property.-->
+<!--    It has a domain force that restricts access to records where the sales_id field is equal to the current user's ID.-->
+<!--    It is linked to the "group_property_user" group.-->
+<!--    It allows read access but prohibits the creation of new records.-->
+        <record id="property_rule_for_users" model="ir.rule">
+            <field name="name">Property Rules for Users</field>
+            <field name="model_id" ref="real_estate_ads.model_estate_property"/>
+            <field name="domain_force">[('sales_id','=',user.id)]</field>
+            <field name="groups" eval="[(4, ref('real_estate_ads.group_property_user'))]"/>
+            <field name="perm_read" eval="True" />
+            <field name="perm_create" eval="False" />
+            <field name="perm_write" eval="True" />
+            <field name="perm_unlink" eval="True" />
+        </record>
+
+<!--        Property Rule for Manager:-->
+
+<!--    Similar to the user rule but without a domain (allowing access to all records).-->
+<!--    Linked to the "group_property_manager" group.-->
+<!--    Allows read, create, write, and unlink access.-->
+          <record id="property_rule_for_manager" model="ir.rule">
+            <field name="name">Property Rules for Manager</field>
+            <field name="model_id" ref="real_estate_ads.model_estate_property"/>
+            <field name="domain_force">[(1,'=',1)]</field>
+            <field name="groups" eval="[(4, ref('real_estate_ads.group_property_manager'))]"/>
+            <field name="perm_read" eval="True" />
+            <field name="perm_create" eval="True" />
+            <field name="perm_write" eval="True" />
+            <field name="perm_unlink" eval="True" />
+        </record>
+    </data>
+</odoo>

@@ -2,7 +2,7 @@
 # It will include all the necessary fields and behaviors for the data you will be storing.
 # The _name attribute is most required as it defines the name of the model.
 # It`s the table.
-from odoo import fields, models, api
+from odoo import fields, models, api, _
 
 
 class Property(models.Model):
@@ -56,6 +56,7 @@ class Property(models.Model):
         ('east', 'East'),
         ('west', 'West')],
         String="Garden Orientation", default='north')
+    # for one2many fields, first create property_id as many2one relation and then create here, one2many.
     offer_ids = fields.One2many('estate.property.offer', 'property_id', String='Offers')
     # And this salesperson can be.
     # Somebody in the system.
@@ -103,6 +104,7 @@ class Property(models.Model):
 
     offer_count = fields.Integer(string="Offer Count", compute=_compute_offer_count)
 
+    # view the offer against each property
     def action_property_view_offers(self):
         return {
             'type': "ir.actions.act_window",
@@ -123,6 +125,7 @@ class Property(models.Model):
                 rec.best_offer = max(rec.offer_ids.mapped('price'))
             else:
                 rec.best_offer = 0
+
     # The second additional thing you should know are automatic fields
     # These fields are automatically created by odoo
     # They cannot be written to, but you can read them if you need to see some information there
@@ -136,6 +139,29 @@ class Property(models.Model):
     # In the next lecture we will see how security play a big role in creating your model Get straight to that.
     # id,create_date,create_uid,write_date,write_uid
 
+    # Working with client action
+    # def action_client_action(self):
+    #     return {
+    #         'type': 'ir.actions.client',
+    #         'tag': 'display_notification',
+    #         'params': {
+    #             'title': _('Testing Client'),
+    #             'type': 'success',
+    #             'sticky': False
+    #         }
+    #     }
+
+# Working with URL Actions
+    def action_url_action(self):
+        return {
+            'type': 'ir.actions.act_url',
+            'url': 'www.odoo.com',
+            'target': 'new',
+        }
+
+    def _get_report_base_filename(self):
+        self.ensure_one()
+        return 'Estate Property - %s' % self.name
 
 class PropertyType(models.Model):
     _name = 'estate.property.type'
@@ -154,3 +180,5 @@ class PropertyTag(models.Model):
     #     Used the options attribute to link the color field to the tag model.
     #     Tags now display colors in the menu.
     color = fields.Integer(string='Color')
+
+

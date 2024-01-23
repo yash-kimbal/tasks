@@ -42,7 +42,6 @@ class AbstractOffer(models.AbstractModel):
 #     partner_phone = fields.Char(string="Phone Number")
 
 # Regular Model:
-#
 #     Regular models are the common models used in Odoo, and they create tables in the database.
 #     No specific example or demonstration is provided for regular models in this lecture,
 #     but they have been extensively used in previous examples throughout the course.
@@ -149,7 +148,7 @@ class PropertyOffer(models.Model):
             })
         self.status = "accepted"
 
-# Validation on Acceptance:
+    # Validation on Acceptance:
     #     A validation method, validate_accepted_offer, is added to the offer model.
     #     It checks if there's already an accepted offer for the property and
     #     raises an error if attempting to accept another offer.
@@ -163,7 +162,7 @@ class PropertyOffer(models.Model):
         if offer_ids:
             raise ValidationError("YOU HAVE AN ACCEPTED OFFER ALREADY")
 
-# Handling Decline:
+    # Handling Decline:
     #
     #     On declining an offer, the associated property's selling price is set to zero,
     #     and the status is updated to "Received."
@@ -174,3 +173,27 @@ class PropertyOffer(models.Model):
                 'selling_price': 0,
                 'state': 'received'
             })
+
+    # Working with Server Actions
+
+    def extend_offer_deadline(self):
+        # Retrieves the list of active record IDs from the context.
+        # The active_ids typically holds the IDs of records that the action is applied to.
+        activ_ids = self._context.get('active_ids', [])
+        if activ_ids:
+            # Uses the Odoo environment (self.env) to create a
+            # record set (offer_ids) for the model estate.property.offer using the active IDs.
+            offer_ids = self.env['estate.property.offer'].browse(activ_ids)
+            # Iterates through each record in the offer_ids record set.
+            for offer in offer_ids:
+                # Sets the validity field of each estate.property.offer record to the value of 10.
+                offer.validity = 10
+
+    # cron->Adding Scheduled Actions to our Module
+    # search([]) -> Searching through all offers
+    # search([()]) -> Want to have domain in this search function
+    def _extend_offer_deadline(self):
+        offer_ids = self.env['estate.property.offer'].search([])
+        # So every day that this function runs, whatever value the offer validity is holding, it adds one to it.
+        for offer in offer_ids:
+            offer.validity = offer.validity + 1

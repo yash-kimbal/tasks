@@ -126,14 +126,13 @@ The template includes fields such as the property name and tags.-->
                                 </div>
                             </div>
                             </div>
-
                         </t>
                     </templates>
                 </kanban>
             </field>
         </record>
 
-<!--        QUICK CREATE UNDER KANBAN VIEW (When clicking New Button)-->
+<!--        QUICK CREATE UNDER KANBAN VIEW (When clicking New Button) - Form View -->
         <record id="quick_create_estate_property_form_view" model="ir.ui.view">
             <field name="name">estate.property.form</field>
             <field name="model">estate.property</field>
@@ -206,6 +205,16 @@ Each button has a corresponding method in the model (action_accept and action_de
                             <button class="oe_stat_button" name="action_property_view_offers" type="object" icon="fa-handshake-o">
                                 <field name="offer_count" string="Offers" widget="statinfo"/>
                             </button>
+
+<!--                            Working with URL Actions-->
+                            <button class="oe_stat_button" name="action_url_action" type="object" icon="fa-handshake-o">
+                                <field name="offer_count" string="Offers" widget="statinfo"/>
+                            </button>
+
+<!--                            Working with client action-->
+<!--                             <button class="oe_stat_button" name="action_client_action" type="object" icon="fa-handshake-o">-->
+<!--                                <field name="offer_count" string="Testing Client" widget="statinfo"/>-->
+<!--                            </button>-->
                         </div>
                         <group>
                             <field name="name" widget="char_emojis" placeholder="Property Name"/>
@@ -221,7 +230,9 @@ allowing users to view and edit the status directly from the property form.-->
                                 <field name="data_availability"/>
                             </group>
                             <group>
-                                <field name="expected_price"/>
+<!--                           Access Rights->  Demonstrated how to hide a specific field ("Expected Price")
+                                    for certain user groups using the groups attribute on the field.-->
+                                <field name="expected_price" groups="real_estate_ads.group_property_manager"/>
                                 <field name="best_offer"/>
                                 <field name="selling_price"/>
                             </group>
@@ -297,6 +308,62 @@ There will be many to one. -->
                 </p>
             </field>
         </record>
+
+
+<!--Working with Client Actions-->
+         <record id="action_custom_client_action" model="ir.actions.client">
+            <field name="name">Custom Client Action</field>
+            <field name="tag">custom_client_action</field>
+        </record>
+
+
+<!--        Working with Server Actions-->
+<!--        This creates a new record with the ID "action_extend_offer_deadline"
+for the model "ir.actions.server," indicating it's a server action record.-->
+        <record id="action_extend_offer_deadline" model="ir.actions.server">
+            <field name="name">Extend Deadline</field>
+<!--            specifies the target model for the server action.
+In this case, it refers to the model "real_estate_ads.model_estate_property_offer."-->
+            <field name="model_id" ref="real_estate_ads.model_estate_property_offer"/>
+<!--            Defines the state of the server action as "code,"
+indicating that the action is implemented using Python code.-->
+            <field name="state">code</field>
+<!--            Introduces the binding model ID, specifying the model to which the action is bound.
+In this case, it's "real_estate_ads.model_estate_property_offer."-->
+            <field name="binding_model_id" ref="real_estate_ads.model_estate_property_offer" />
+<!--            Specifies the view types to which the action is bound. -->
+<!--            It indicates that the action is applicable to both list and form views.-->
+            <field name="binding_view_types">list,form</field>
+<!--            Contains the Python code that will be executed when the server action is triggered.
+It calls the method extend_offer_deadline() on the model.-->
+            <field name="code">
+                action = model.extend_offer_deadline()
+            </field>
+        </record>
+
+<!--Adding Scheduled Actions to our Module-->
+        <record id="ir_cron_extend_offer_deadline" model="ir.cron">
+            <field name="name">Offer: Extend Deadline Everyday</field>
+            <field name="model_id" ref="real_estate_ads.model_estate_property_offer"/>
+            <field name="state">code</field>
+<!--            the code you are familiar with that it is a field that holds the function which should be triggered-->
+            <field name="code">model._extend_offer_deadline()</field>
+<!--            Interval number is the frequency of. The cron job, -->
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+<!--            means how often should this cron job run?-->
+            <field name="numbercall">-1</field>
+<!--            This means that you want to trigger this action manually itself, else it will be active and will always run.-->
+<!--            <field name="active" eval="False"/>-->
+
+<!--            You are able to tell Odoo to execute this cron job in case this cron job did
+not run at the appropriate time.
+So if there was a server restart and this cron job was missed,
+you are telling audio to run this cron job again.-->
+<!--            <field name="doall" eval="False"/>-->
+        </record>
+
+
     </data>
 </odoo>
 
