@@ -27,7 +27,7 @@ class Property(models.Model):
         ('accepted', 'Offer Accepted'),
         ('sold', 'Sold'),
         ('cancel', 'Cancelled')
-    ], default='new', string='Status')
+    ], default='new', string='Status', group_expand='_expand_state')
     tag_ids = fields.Many2many('estate.property.tag', String='Property Tag')
     # This implies that each property record can be associated with only one property type,
     # but multiple properties can share the same property type.
@@ -151,13 +151,13 @@ class Property(models.Model):
     #         }
     #     }
 
-# Working with URL Actions
-#     def action_url_action(self):
-#         return {
-#             'type': 'ir.actions.act_url',
-#             'url': 'www.odoo.com',
-#             'target': 'new',
-#         }
+    # Working with URL Actions
+    #     def action_url_action(self):
+    #         return {
+    #             'type': 'ir.actions.act_url',
+    #             'url': 'www.odoo.com',
+    #             'target': 'new',
+    #         }
 
     # <!-- QWeb Report: Creating Report Actions and PDF Report for our Module-->
     def _get_report_base_filename(self):
@@ -170,6 +170,12 @@ class Property(models.Model):
         # In this case, it substitutes %s with the value of self.name.
         #  Example: If self.name is "Luxury Villa," the returned filename would be "Estate Property - Luxury Villa."
         return 'Estate Property - %s' % self.name
+
+    def _expand_state(self, state, domain, order):
+        return [
+            key for key, dummy in type(self).state.selection
+        ]
+
 
 class PropertyType(models.Model):
     _name = 'estate.property.type'
@@ -188,5 +194,3 @@ class PropertyTag(models.Model):
     #     Used the options attribute to link the color field to the tag model.
     #     Tags now display colors in the menu.
     color = fields.Integer(string='Color')
-
-

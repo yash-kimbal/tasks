@@ -103,6 +103,8 @@ The template includes fields such as the property name and tags.-->
             <field name="name">estate.property.kanban</field>
             <field name="model">estate.property</field>
             <field name="arch" type="xml">
+<!--                If you don't use default_group_by, then you will get the New button but in order to get the New Button with-->
+<!--                the attribute - default_group_by , then you need to do some modif. in property.py file-->
                 <kanban default_group_by="state" on_create="quick_create" quick_create_view="real_estate_ads.quick_create_estate_property_form_view">
                     <field name="name"/>
                     <field name="state"/>
@@ -136,6 +138,7 @@ The template includes fields such as the property name and tags.-->
         <record id="quick_create_estate_property_form_view" model="ir.ui.view">
             <field name="name">estate.property.form</field>
             <field name="model">estate.property</field>
+            <field name="priority">1000</field>
             <field name="arch" type="xml">
                 <form>
                     <group>

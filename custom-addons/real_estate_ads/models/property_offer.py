@@ -109,6 +109,7 @@ class PropertyOffer(models.Model):
     # It allows for updates to value before record creation.
     # This example shows how to create multiple property records
     # with a default creation date if not specified in the input.
+
     # @api.model_create_multi
     # def create(self, vals):
     #     for rec in vals:
